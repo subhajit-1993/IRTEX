@@ -1,0 +1,247 @@
+<script data-main="config" src="require.js"></script>
+
+<script>
+    require(['config'],
+        function () {
+            require(['Scripts/CustomScripts/Search_Image.js'],
+                function () { })
+        });
+</script>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="Styles/Search_Image.css">
+    <link rel="stylesheet" type="text/css" href="Scripts/Libraries/SweetAlert/sweetalert2.css">
+    <link rel="stylesheet" type="text/css" href="Scripts/Libraries/jquery-ui-1.12.1/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="Scripts/Libraries/jquery-ui-1.12.1/jquery-ui.structure.css">
+    <link rel="stylesheet" type="text/css" href="Scripts/Libraries/jquery-ui-1.12.1/jquery-ui.theme.css">
+    <link rel="stylesheet" type="text/css" href="Scripts/Libraries/DataTables/datatables.css">
+    <link rel="stylesheet" type="text/css" href="Scripts/Libraries/bootstrap-3.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="Scripts/Libraries/bootstrap-3.3.7-dist/css/bootstrap-theme.css">
+    <link rel="shortcut icon" href="Images/favicon.ico">
+</head>
+
+<body class="body-cls">
+
+    <!-- <form id="mainFormID" action="localhost:3000/lireq" method="post" enctype="multipart/form-data"> -->
+
+    <div id="MainDiv" class="MainClass" style="display: none;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-1">
+                    <img src="Images/logo.PNG">
+                </div>
+                <div class="col-md-11">
+                    <h1 class="customh1" style="color: black;">XVISION</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid" style="padding-top: 0px !important;justify-content: center;">
+            <div class="row row-flex search-container" style="justify-content: center;">
+                <div class="container" style="padding-top: 0;padding-bottom: 0;">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+                            <div class="imageSearchDiv">
+                                <div class="formsDiv">
+                                    <div>
+                                        <label for="upload_box" id="formupload-button" style="cursor: pointer;"></label>
+                                        <input id="formupload_box" type="file" name="image" title="Upload an image"
+                                            aria-label="Upload an image to search for" accept="Image/*">
+                                    </div>
+                                    <div>
+                                        <div class="input-container">
+                                            <input class="image-url" id="url_box" name="url" maxlength="100000"
+                                                placeholder="Upload, paste or enter Image URL"
+                                                aria-label="Enter a link to an image to search for" type="text">
+                                        </div>
+                                        <input class="submit-button" id="SearchBtn" name="search_button" value=""
+                                            type="submit">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="queryImageID" style="display: none; background-color: rgba(246, 249, 253, 1);">
+                <div class="container" style="width: 70%;margin-top: 0.2em;margin-bottom: 0.2em;">
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-3 imgVerCenter" id="viewPartdiv"></div>
+                        <div class="col-sm-9 col-xs-9" id="globalDivID" style="justify-content: center;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="carsContainerID" class="container" style="margin-top: 5em;">
+            <div class="row">
+                <h2 class="card-title">Explore the search with the following images!!</h2>
+            </div>
+            <div class="row" id="slideShowDiv">
+            </div>
+        </div>
+
+        <br />
+        <div class="container" id="resTableContID" style="display: none;">
+            <div class="sorting-row row">
+                <div class="col-sm-3">
+                    <div class="sort dropdown">
+                        <button type="button" data-toggle="dropdown" aria-expanded="false" id="selectListBtn">
+                            Showing 10 Entries<span class="caret"></span></button>
+                        <ul class="dropdown-menu" id="selectlisttable">
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="sort dropdown">
+                        <input class="CmpBtnClass" style="display: none;" data-target="#exampleModalCenter"
+                            data-toggle="modal" type="button" value="Compare" id="gblCmpBtn">
+                    </div>
+                </div>
+            </div>
+            <table id="irtexdbID" class="irtexdbClass">
+                <thead class="TheadClass">
+                    <tr>
+                        <th>
+                            <div class="row match-row">
+                                <div class="col-xs-1 col-sm-1 match-thumb">
+                                    Select
+                                </div>
+                                <div class="col-xs-9 col-sm-9 match-details">
+                                    Result Image
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <!-- </form> -->
+
+    <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="model-dialog modal-dialog-centered modalVertical" style="max-width: 80%;height: 90%; margin: auto;">
+            <div class="modal-content" style="margin: auto;">
+                <!-- <div class="modal-header">
+                    <button type="button" class="close visualCloseBtn" data-dismiss="modal">&times;</button>
+                </div> -->
+                <div class="modal-body">
+                    <button type="button" class="close visualCloseBtn" data-dismiss="modal">&times;</button>
+                    <div id="visualdialog"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="cookieModal" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modalVertical modal-lg" role="document">
+            <div class="modal-content" style="margin:auto;">
+                <div class="modal-body">
+                    <h2 class="modal-title" id="exampleModalLongTitle">🍪 Accept Cookies &amp; Privacy Policy?</h2>
+                    <div class="content_col">
+                        <h3 style="font: 700 22px Axiforma,Arial,serif;">Hi, we’re XVISION. You’re probably here because
+                            you’re interested to explore the image search
+                            tool.</h3>
+                        <h4 class="block-cookies__subtitle">What are cookies?
+                        </h4>
+                        <p>These aren’t the type you eat they’re actually a small data file sent from a
+                            server to your web browser or mobile device that is stored on your browser cache or
+                            mobile device. There are ways you can control your cookies preferences and set whether
+                            you want to accept or reject cookies (see what your options are below).</p>
+                        <h2 class="block-cookies__subtitle">What do we do with these cookies data?</h2>
+                        <p>We use these tracking technologies for a few general purposes like:</p>
+                        <ol start="1">
+                            <li>To allow our sites to function correctly.</li>
+                            <li>To understand how our sites are functioning and to inform any improvements in
+                                performance and our services.</li>
+                            <li>To enhance your experience on our sites and provide functionality that means for example
+                                you don’t have to re-enter your details each time you engage with our sites or to record
+                                what purchases you’ve made on our sites.</li>
+                            <li>To gather relevant data that helps us deliver marketing and advertising content relevant
+                                to your interests.</li>
+                        </ol>
+                        <p>We might sometimes partner with third-party services who may use various tracking
+                            technologies to provide certain services or features on our sites, including targeted online
+                            marketing or relevant on-site messaging. These third-party services use cookies to
+                            anonymously collect data and allow them to recognize your computer or mobile device each
+                            time you visit any of our sites. No personally identifiable information is collected by
+                            these cookies. The anonymous data they collect is kept separate from the personal
+                            information about you as a user that we collect.</p>
+                        <h2 class="block-cookies__subtitle">Your options when it comes cookies</h2>
+                        <p>You can change your web browser’s settings to reflect your cookie preferences. Use these
+                            links to find out more information about cookie settings for these common browsers:</p>
+                        <ol start="1">
+                            <li><a href="http://windows.microsoft.com/en-US/windows7/Block-enable-or-allow-cookies"
+                                    target="_blank">Internet Explorer</a></li>
+                            <li><a href="https://support.mozilla.org/en-US/kb/cookies-information-websites-store-on-your-computer"
+                                    target="_blank">Firefox</a></li>
+                            <li><a href="https://support.google.com/chrome/answer/95647?hl=en"
+                                    target="_blank">Chrome</a></li>
+                            <li><a href="https://support.apple.com/en-us/HT201265" target="_blank">Safari</a></li>
+                        </ol>
+                        <p>Please accept in-order to continue further.</p>
+                    </div>
+                    <p class="cookieBtn">
+                        <button type="button" id="cookiesBtn" class="btn btn-secondary" data-dismiss="modal">Accept
+                            Cookies</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" id="captcha_app_div" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modalVertical modal-lg" role="document">
+            <div class="modal-content" style="margin:auto;">
+                <div class="modal-body">
+                    <ul class="captcha_appCls" id="captcha_app">
+                        <li class="cursor-pointer captcha_appClsli" id="refresh" style="vertical-align: inherit;">
+                            <svg fill="#555555" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="tiny" x="0px"
+                                y="0px" width="34px" height="34px" viewBox="0 0 480 480" xml:space="preserve"
+                                style="vertical-align: middle;" id="captchaRefresh">
+                                <g>
+                                    <path
+                                        d="M383.434,172.242c-25.336-58.241-81.998-95.648-145.861-95.648c-65.309,0-125,40.928-148.514,101.827l49.5,19.117   c15.672-40.617,55.469-67.894,99.014-67.894c42.02,0,79.197,24.386,96.408,62.332l-36.117,14.428l92.352,53.279l27.01-100.933   L383.434,172.242z">
+                                    </path>
+                                    <path
+                                        d="M237.573,342.101c-41.639,0-79.615-25.115-96.592-62.819l35.604-13.763l-91.387-52.119l-27.975,98.249l34.08-13.172   c24.852,58.018,82.859,96.671,146.27,96.671c65.551,0,123.598-39.336,147.871-100.196l-49.268-19.652   C319.981,315.877,281.288,342.101,237.573,342.101z">
+                                    </path>
+                                </g>
+                            </svg>
+                        </li>
+                        <li class="captchabordered captcha_appClsli"
+                            style="vertical-align: inherit; height: inherit; line-height: 1.5; border: none;">
+                            <p class="captchaptag">
+                                <span id="captchanumber1">71</span>
+                                <span id="function">+</span>
+                                <span id="captchanumber2">90</span>
+                            </p>
+                        </li>
+                        <li class="captcha_appClsli" style="vertical-align: inherit;">=</li>
+                        <li class="captchabordered captcha_appClsli">
+                            <input type="text" size="3" name="equal" value="" class="captchainputbox" id="captchaResult"
+                                maxlength="3">
+                        </li>
+                    </ul>
+                    <p style="color: red;display: none;" id="captchawarnId">Please Enter Valid Captcha!!</p>
+                    <p class="captchaBtn">
+                        <button type="button" id="captchaBtnId" class="btn btn-secondary captchaBtnPrim">Check</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modalDiv">&#160;</div>
+</body>
+
+</html>

@@ -5,3 +5,4 @@
 /Image Server/IRTEX_Image_Core/dist/
 /Image Server/IRTEX_Console_Test/dist/
 /Image Server/background_substractor/nbproject/private/
+node_modules/
